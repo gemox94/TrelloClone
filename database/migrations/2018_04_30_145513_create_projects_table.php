@@ -22,7 +22,7 @@ class CreateProjectsTable extends Migration
             $table->integer('admin_id')->unsigned();
             $table->foreign('admin_id')->references('id')->on('users')->onDelete('restrict');
 
-            $table->integer('team_id')->unsigned();
+            $table->integer('team_id')->unsigned()->nullable();
             $table->foreign('team_id')->references('id')->on('teams')->onDelete('restrict');
         });
     }
