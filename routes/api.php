@@ -37,8 +37,8 @@ Route::delete('/teams/{team_id}', 'TeamController@delete');
 /*
  * Users endpoints
  */
-Route::get('/teams/{team_id}', 'TeamController@get');
-Route::put('/teams/{team_id}', 'TeamController@update');
+Route::get('/users/{user_id}', 'UserController@get');
+Route::put('/users/{user_id}', 'UserController@update');
 
 /*
  * Users Team endpoints
@@ -81,8 +81,8 @@ Route::delete('/cards/{card_id}', 'CardController@delete');
  * Roles endpoints
  */
 
-Route::get('/roles', 'CardController@get');
-Route::post('/roles', 'CardController@create');
-Route::get('/roles/{role_id}', 'CardController@get');
-Route::put('/roles/{role_id}', 'CardController@update');
-Route::delete('/roles/{role_id}', 'CardController@delete');
+Route::get('/roles', 'RoleController@get');
+Route::post('/roles', 'RoleController@create');
+Route::get('/roles/{role_id}', 'RoleController@get');
+Route::put('/roles/{role_id}', 'RoleController@update');
+Route::delete('/roles/{role_id}', 'RoleController@delete');
