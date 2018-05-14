@@ -12,5 +12,6 @@ The project will be an API, build with Laravel.
 * Clone project
 * Install laravel dependencies `composer install`
 * Remember to create your **.env** file so you can set yor DB configuration
+* Create App Key with `php artisan key generate`
 * Once configured environment file and DB, run `php artisan migrate` to create migrations
 * Because this project is an API, we'll use the laravel Passport service to authenticate, must run `php artisan passport:install`. (Link to passport documentation: https://laravel.com/docs/5.6/passport)
