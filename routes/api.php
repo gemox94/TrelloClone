@@ -21,7 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
  *  Authorization endpoints
  */
 Route::post('/login', 'AuthorizationController@login');
-Route::post('/signup', 'AuthorizationController@singup');
+Route::post('/signup', 'AuthorizationController@signup');
 Route::get('/logout', 'AuthorizationController@logout');
 
 /*
