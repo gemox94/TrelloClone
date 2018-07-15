@@ -11,6 +11,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
+    public function findForPassport($username)
+    {
+        return $this->where('email', $username)->first();
+    }
+
     public function role(){
         return $this->belongsTo('App\Role', 'role_id', 'id');
     }
