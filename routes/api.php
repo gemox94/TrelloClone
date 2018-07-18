@@ -22,6 +22,19 @@ Route::middleware('auth:api')->get('test-token/user', function(Request $request)
     return response()->json(['user' => $user]);
 });
 
+Route::middleware(['auth:api'])->group(function () {
+
+    /*
+ * Teams endpoints
+ */
+
+    Route::get('/teams', 'TeamController@get');
+    Route::post('/teams', 'TeamController@create');
+    Route::get('/teams/{team_id}', 'TeamController@get');
+    Route::put('/teams/{team_id}', 'TeamController@update');
+    Route::delete('/teams/{team_id}', 'TeamController@delete');
+
+});
 /*
  *  Authorization endpoints
  */
@@ -29,15 +42,6 @@ Route::post('/login', 'AuthorizationController@login');
 Route::post('/signup', 'AuthorizationController@signup');
 Route::get('/logout', 'AuthorizationController@logout');
 
-/*
- * Teams endpoints
- */
-
-Route::get('/teams', 'TeamController@get');
-Route::post('/teams', 'TeamController@create');
-Route::get('/teams/{team_id}', 'TeamController@get');
-Route::put('/teams/{team_id}', 'TeamController@update');
-Route::delete('/teams/{team_id}', 'TeamController@delete');
 
 /*
  * Users endpoints
