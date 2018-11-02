@@ -61,7 +61,7 @@ class AuthorizationController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return response()->json(['errors' => $validator->errors()], 400);
+                return response()->json(['errors' => $validator->errors()], 401);
             }
 
             $email = $request->get('email');
@@ -72,9 +72,9 @@ class AuthorizationController extends Controller
                 'form_params' => [
                     'grant_type' => 'password',
                     'client_id' => 2,
-                    'client_secret' => '2ZexhBO7K760aw2RxaGF6i1x2yfv8kpGwSE1O4kq',
-                    'username' => 'gerardo.mx.rz@gmail.com',
-                    'password' => 'password',
+                    'client_secret' => 'XmltAvlwyxhcQUDjsLovmjgM7njsD1OAKHmJA0Sd',
+                    'username' => $email,
+                    'password' => $pass,
                     'scope' => '',
                 ],
             ]);
