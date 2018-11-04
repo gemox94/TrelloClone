@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Role;
-use App\User;
+// Dependencies
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use GuzzleHttp;
 use \Exception;
 use Validator;
+
+// Models
+use App\Role;
+use App\User;
 
 class AuthorizationController extends Controller
 {
@@ -40,8 +45,32 @@ class AuthorizationController extends Controller
             $user->role()->associate($role_admin);
             $user->save();
 
+            $oauth_client = DB::table('oauth_clients')->where('id', 2)->first();
+
+            if (!$oauth_client) {
+                return response()->json(['error' => 'Passport not working properly!'], 500);
+            }
+
+            $http = new GuzzleHttp\Client;
+            $response = $http->post(env('PROJECT_URL').'/oauth/token', [
+                'form_params' => [
+                    'grant_type' => 'password',
+                    'client_id' => $oauth_client->id,
+                    'client_secret' => $oauth_client->secret,
+                    'username' => $email,
+                    'password' => $pass,
+                    'scope' => '',
+                ],
+            ]);
+
+            $auth_token = json_decode((string) $response->getBody(), true);
+
+            $user->access_token = $auth_token['access_token'];
+            $user->refresh_token = $auth_token['refresh_token'];
+            $user->save();
+
             $status_code = 200;
-            $response = ['user' => $user];
+            $response = ['auth' => $user->access_token];
 
         } catch (Exception $e) {
             $status_code = 500;
@@ -66,13 +95,28 @@ class AuthorizationController extends Controller
 
             $email = $request->get('email');
             $pass = $request->get('password');
+            $credentials = ['email' => $email, 'password' => $pass];
+            if (Auth::once($credentials)) {
+                $user = User::where('email', $email)->first();
+                $status_code = 200;
+                $response = ['auth' => $user->access_token];
+            } else {
+                $status_code = 401;
+                $response = ['error' => 'Bad Credentials!'];
+            }
+
+            /* $oauth_client = DB::table('oauth_clients')->where('id', 2)->first();
+
+            if (!$oauth_client) {
+                return response()->json(['error' => 'Passport not working properly!'], 500);
+            }
 
             $http = new GuzzleHttp\Client;
             $response = $http->post(env('PROJECT_URL').'/oauth/token', [
                 'form_params' => [
                     'grant_type' => 'password',
-                    'client_id' => 2,
-                    'client_secret' => 'XmltAvlwyxhcQUDjsLovmjgM7njsD1OAKHmJA0Sd',
+                    'client_id' => $oauth_client->id,
+                    'client_secret' => $oauth_client->secret,
                     'username' => $email,
                     'password' => $pass,
                     'scope' => '',
@@ -80,7 +124,7 @@ class AuthorizationController extends Controller
             ]);
 
             $status_code = 200;
-            $response = ['auth' => json_decode((string) $response->getBody(), true)];
+            $response = ['auth' => json_decode((string) $response->getBody(), true)]; */
 
         } catch(Exception $e) {
             $status_code = 500;

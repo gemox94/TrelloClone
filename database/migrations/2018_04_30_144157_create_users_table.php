@@ -20,6 +20,8 @@ class CreateUsersTable extends Migration
             $table->string('email');
             $table->string('password');
             $table->string('status')->nullable();
+            $table->text('access_token')->nullable();
+            $table->text('refresh_token')->nullable();
             $table->timestamps();
 
             $table->integer('role_id')->unsigned();
