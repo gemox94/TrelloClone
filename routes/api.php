@@ -25,14 +25,22 @@ Route::middleware('auth:api')->get('test-token/user', function(Request $request)
 Route::middleware(['auth:api'])->group(function () {
 
     /*
- * Teams endpoints
- */
-
+     * Teams endpoints
+     */
     Route::get('/teams', 'TeamController@get');
     Route::post('/teams', 'TeamController@create');
     Route::get('/teams/{team_id}', 'TeamController@get');
     Route::put('/teams/{team_id}', 'TeamController@update');
     Route::delete('/teams/{team_id}', 'TeamController@delete');
+
+    /*
+     * Projects endpoints
+     */
+    Route::get('/projects', 'ProjectController@get');
+    Route::post('/projects', 'ProjectController@create');
+    Route::get('/projects/{project_id}', 'ProjectController@get');
+    Route::put('/projects/{project_id}', 'ProjectController@update');
+    Route::delete('/projects/{project_id}', 'ProjectController@delete');
 
 });
 /*
@@ -55,16 +63,6 @@ Route::put('/users/{user_id}', 'UserController@update');
 
 Route::get('/teams/{team_id}/users', 'UserTeamController@get');
 Route::post('/teams/users', 'UserTeamController@create');
-
-/*
- * Projects endpoints
- */
-
-Route::get('/projects', 'ProjectController@get');
-Route::post('/projects', 'ProjectController@create');
-Route::get('/projects/{project_id}', 'ProjectController@get');
-Route::put('/projects/{project_id}', 'ProjectController@update');
-Route::delete('/projects/{project_id}', 'ProjectController@delete');
 
 /*
  * Boards endpoints
