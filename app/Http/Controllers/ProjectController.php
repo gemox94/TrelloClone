@@ -111,4 +111,26 @@ class ProjectController extends Controller
 
         return response()->json($response, $status);
     }
+
+    public function delete(Request $request, $project_id) {
+        try {
+            if (Project::where('id', $project_id)->exists()) {
+                $project = Project::find($project_id);
+                $project->delete();
+                $status = 200;
+                $response = ['project' => $project];
+
+            } else {
+                $status = 404;
+                $response = ['error' => 'Project not found!'];
+                
+            }
+
+        } catch (Exception $e) {
+            $status = 500;
+            $response = ['error' => $e->getMessage()];
+        }
+
+        return response()->json($response, $status);
+    }
 }
